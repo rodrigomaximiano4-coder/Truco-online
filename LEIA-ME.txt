@@ -1,0 +1,20 @@
+TRUCO ONLINE • MAX HEALMS • ARQUIVOS LEGAIS
+
+Package Android definido:
+com.maxhealms.truco
+
+Suba estes dois arquivos na RAIZ do repositório:
+rodrigomaximiano4-coder/Truco-online
+
+1) privacy.html
+2) delete.html
+
+Depois, com GitHub Pages ativado para a branch main, os endereços esperados serão:
+
+https://rodrigomaximiano4-coder.github.io/Truco-online/privacy.html
+https://rodrigomaximiano4-coder.github.io/Truco-online/delete.html
+
+IMPORTANTE:
+- Abra ambos em janela anônima e confirme que funcionam sem login.
+- A política foi escrita com base no projeto atual: perfil local, moedas virtuais, compras Google Play, Firebase quando habilitado e AdMob quando habilitado.
+- O e-mail não foi escrito diretamente no HTML. A página referencia o mesmo e-mail de suporte informado na Google Play, conforme solicitado.
