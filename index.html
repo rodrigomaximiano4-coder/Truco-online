@@ -6,119 +6,99 @@
 <meta name="theme-color" content="#070503">
 <title>Truco Online • MAX HEALMS</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#070503;color:#fff;font-family:Arial,sans-serif}
-button{font:inherit}
-#app{min-height:100svh}
-.menu{position:fixed;inset:0;min-height:100svh;background:#080604;overflow:hidden}
-.menuBg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;filter:brightness(.58) saturate(1.08);z-index:0}
-.menuShade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.10) 38%,rgba(0,0,0,.42) 63%,rgba(0,0,0,.88) 100%)}
-.topHud{position:absolute;left:10px;right:10px;top:max(8px,env(safe-area-inset-top));z-index:4;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.player,.coins{background:#090705d9;border:1px solid #9b6a2a;border-radius:15px;padding:8px 10px;font-weight:900;text-shadow:0 2px 4px #000;box-shadow:0 4px 14px #0007}
-.player{font-size:clamp(11px,3.2vw,15px);max-width:58%}
-.coins{font-size:clamp(13px,3.7vw,17px);color:#ffd86b}
-.logoPlate{position:absolute;z-index:3;left:50%;top:12.5%;transform:translateX(-50%);width:min(86vw,430px);text-align:center;text-shadow:0 4px 14px #000}
-.logoPlate .t1{font-size:clamp(46px,15vw,76px);font-weight:1000;line-height:.82;color:#f6c85b;-webkit-text-stroke:1px #6b3b13}
-.logoPlate .t2{font-size:clamp(21px,6.7vw,34px);font-weight:1000;letter-spacing:2px;margin-top:8px}
-.logoPlate .brand{display:inline-block;margin-top:8px;background:#9e241a;border:1px solid #f0b14f;border-radius:8px;padding:6px 16px;color:#ffd56f;font-weight:1000;font-size:clamp(13px,4vw,18px)}
-.menuActions{position:absolute;z-index:4;left:7vw;right:7vw;bottom:calc(104px + env(safe-area-inset-bottom));display:grid;gap:9px}
-.menuBtn{min-height:58px;border-radius:18px;border:2px solid #e9d7a8;color:#fff;font-weight:1000;font-size:clamp(18px,5vw,23px);letter-spacing:.2px;text-shadow:0 2px 3px #000;box-shadow:0 8px 18px #0008}
-.play{background:linear-gradient(180deg,#35ca3c,#14741a);border-color:#d8f2a8}
-.google{background:linear-gradient(180deg,#419cff,#1955aa);border-color:#d8e8ff;font-size:clamp(15px,4.3vw,19px)}
-.bottomNav{position:absolute;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));z-index:4;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.bottomNav button{min-height:76px;border:1px solid #8f6127;border-radius:15px;background:linear-gradient(180deg,#2b180e,#120b07);color:#ffe0a2;font-weight:900;font-size:11px;line-height:1.12;padding:7px 3px;box-shadow:0 5px 13px #0008}
-.bottomNav .ico{display:block;font-size:24px;margin-bottom:4px}
-.screen{
-position:fixed;inset:0;width:100vw;height:100svh;min-height:100svh;
-overflow-y:auto;overflow-x:hidden;
-background:linear-gradient(#20140b,#080604);
-padding:max(10px,env(safe-area-inset-top)) 12px max(18px,env(safe-area-inset-bottom));
--webkit-overflow-scrolling:touch
-}
-.topbar{
-position:sticky;top:0;z-index:20;
-display:flex;align-items:center;gap:10px;
-margin:-2px -2px 12px;padding:4px 2px 8px;
-background:linear-gradient(180deg,#20140b 75%,transparent)
-}
-.back{border:1px solid #9a6a28;background:#1b1008;color:#ffd77a;border-radius:12px;padding:10px 12px;font-weight:900}
-.title{font-size:22px;font-weight:1000;color:#f5c454}
-.card{
-background:#120d09;border:1px solid #69471f;border-radius:18px;
-padding:12px;margin:8px 0;box-shadow:0 8px 22px #0006;
-width:100%
-}
-.grid{
-display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
-width:100%
-}
-.tbl,.action{
-border:1px solid #9a6a28;background:linear-gradient(#2c180d,#160c07);
-color:#fff;border-radius:16px;padding:13px 8px;font-weight:900;
-min-height:66px;width:100%
-}
-.tbl strong{display:block;color:#ffd86b;font-size:20px;margin-bottom:5px}
-.green{background:linear-gradient(#2db934,#146917);border-color:#b7e99e}
-.blue{background:linear-gradient(#318de9,#174e9d);border-color:#b4d7ff}
-.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.badge{padding:7px 10px;border-radius:999px;background:#25160d;border:1px solid #79501f;color:#ffd86b;font-weight:800}
-.small{font-size:12px;opacity:.75}
-.reactions{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.react{min-height:62px;border:1px solid #765025;background:#1b1009;color:#fff;border-radius:13px;font-size:23px}
-.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:50;background:#111;border:1px solid #a97a34;border-radius:999px;padding:11px 16px;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
-.toast.show{opacity:1}
-@media(max-height:720px){
-  .logoPlate{top:9%}.menuActions{bottom:86px;gap:6px}.menuBtn{min-height:50px}.bottomNav button{min-height:66px}
-}
-@media(max-width:380px){
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .reactions{grid-template-columns:repeat(3,1fr)}
-  .title{font-size:19px}
-  .tbl strong{font-size:17px}
-}
-@media(min-height:780px){
-  .screen{padding-top:max(12px,env(safe-area-inset-top))}
-}
+*{box-sizing:border-box}html,body{margin:0;background:#050403;color:#fff;font-family:Arial,sans-serif}
+button{font:inherit}#app{min-height:100svh}.hide{display:none!important}
+
+/* MENU */
+.menu{position:fixed;inset:0;overflow:hidden;background:#070503}
+.menuArt{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center}
+.menuShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.02) 0 68%,rgba(5,3,2,.65) 78%,#050403 100%)}
+.hud{position:absolute;z-index:5;left:9px;right:9px;top:max(8px,env(safe-area-inset-top));display:flex;justify-content:space-between;gap:8px}
+.pill{background:#080604ee;border:1px solid #a8782f;border-radius:15px;padding:8px 10px;font-weight:900;box-shadow:0 4px 14px #0009}
+.player{font-size:clamp(11px,3.2vw,15px)}.player small{font-size:.72em;opacity:.8}.coins{color:#ffd766;font-size:clamp(13px,3.6vw,17px)}
+.hot{position:absolute;z-index:7;border:0;background:transparent;opacity:.001}
+.playHot{left:1%;width:98%;top:49.5%;height:13%}.googleHot{left:1%;width:98%;top:62.2%;height:11%}
+.bottomMask{position:absolute;z-index:4;left:0;right:0;bottom:0;height:27%;background:linear-gradient(180deg,transparent,rgba(5,3,2,.83) 34%,#050403 75%)}
+.nav{position:absolute;z-index:8;left:7px;right:7px;bottom:max(7px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.nav button{min-height:76px;border:1px solid #8e6027;border-radius:15px;background:linear-gradient(#2b180e,#100a06);color:#ffe0a2;font-weight:900;font-size:10px;padding:6px 3px;line-height:1.08;box-shadow:0 5px 14px #0009}
+.nav span{display:block;font-size:23px;margin-bottom:4px}.nav small{display:block;font-size:7px;opacity:.7;margin-top:3px}
+
+/* SHARED */
+.screen{min-height:100svh;background:radial-gradient(circle at 50% -10%,#5b371536,transparent 38%),linear-gradient(#100c08,#050403);padding:max(9px,env(safe-area-inset-top)) 8px max(16px,env(safe-area-inset-bottom));overflow-x:hidden}
+.top{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto auto;gap:7px;align-items:center;padding:4px 0 10px;background:linear-gradient(#100c08 78%,transparent)}
+.profile{display:flex;gap:7px;align-items:center;background:#171009;border:1px solid #956526;border-radius:15px;padding:7px 9px;min-width:0}.avatar{font-size:25px}.profile b{font-size:14px}.profile small{font-size:9px;opacity:.65}
+.coinBadge{background:#151009;border:1px solid #b47a24;border-radius:999px;padding:9px 10px;color:#ffd765;font-weight:900;white-space:nowrap}
+.back{border:0;border-radius:12px;background:linear-gradient(#f6cb5a,#c99222);color:#1a1008;font-weight:1000;padding:10px 11px}
+
+/* LOBBY */
+.hero{border:1px solid #7c5923;border-radius:20px;padding:15px 14px;margin:7px 0 10px;text-align:center;background:radial-gradient(circle at 75% 0,#e4b83b1d,transparent 35%),linear-gradient(145deg,#142c1e,#151008)}
+.hero .ey{font-size:10px;letter-spacing:2px;color:#e9bd4a;font-weight:900}.hero h2{margin:5px 0 3px;font-size:22px}.hero p{margin:0;font-size:11px;opacity:.65}
+.tables{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.table{position:relative;min-height:183px;border:1px solid #8a5d22;border-radius:17px;padding:10px;text-align:left;color:#fff;background:radial-gradient(circle at 80% 0,#f0ca6412,transparent 30%),linear-gradient(155deg,#28190f,#0c0906 68%);box-shadow:0 7px 18px #0008}
+.table:disabled{opacity:.38;filter:grayscale(.65)}.tableHead{display:flex;gap:6px;align-items:center;font-weight:1000;font-size:13px}.tableHead i{font-style:normal;font-size:22px}
+.felt{height:65px;border-radius:50%/37%;margin:8px 0 6px;border:5px solid #4a2a12;background:radial-gradient(circle,#226b48,#123f2a);display:grid;place-items:center;box-shadow:inset 0 0 15px #0009,0 4px 10px #0008}.felt span{font-size:29px}
+.sub{font-size:10px;opacity:.58}.price{font-size:12px;margin-top:5px}.status{font-size:9px;font-weight:1000;color:#5ce58a;margin-top:7px}.tap{display:block;color:#ffcf42;margin-top:3px}.locked{color:#a89e90}
+
+/* GAME */
+.gameTop{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;margin-bottom:6px}.gameTop .stake{text-align:center;font-size:12px}.exit{justify-self:end;background:#d74738;color:#fff;border:0;border-radius:13px;padding:10px 14px;font-weight:900}
+.score{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin:4px 2px 7px}.score b{font-size:14px}
+.board{height:min(56svh,485px);min-height:420px;border:3px solid #5a3517;border-radius:19px;background:radial-gradient(circle at center,#1b7248,#105433);display:grid;grid-template-columns:62px 1fr 62px;grid-template-rows:77px 1fr 105px;gap:3px;padding:6px;box-shadow:inset 0 0 32px #0008}
+.seat{text-align:center;font-size:11px}.seat.topSeat{grid-column:1/4}.seat.left{grid-column:1;grid-row:2}.seat.right{grid-column:3;grid-row:2}.center{grid-column:2;grid-row:2;border:6px solid #4b2b12;border-radius:28px;display:grid;place-items:center;background:radial-gradient(#1a6a45,#103e2a);box-shadow:inset 0 0 22px #000a}
+.me{grid-column:1/4;grid-row:3;text-align:center;align-self:end}.hand{display:flex;justify-content:center;gap:6px;margin-top:4px}
+.backCard{display:inline-block;width:22px;height:32px;border:1px solid #fff;border-radius:5px;background:repeating-linear-gradient(45deg,#7a1f1f,#7a1f1f 4px,#a33 4px,#a33 8px);margin:1px}.me .backCard{width:0}
+.card{width:52px;height:74px;border-radius:7px;background:#fffdf7;color:#111;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;font-weight:900;border:1px solid #aaa}.red{color:#bd342c}
+.vira{text-align:center;font-size:11px}.vira .card{width:46px;height:65px;font-size:20px;margin-top:4px}
+.msg{text-align:center;color:#f2c549;font-size:12px;font-weight:900;margin:8px 0 6px;min-height:18px}.actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.truco{background:linear-gradient(#ffd059,#e8aa20);border:0;border-radius:15px;padding:12px 18px;font-weight:1000;color:#201306;font-size:18px}.reactOpen{background:linear-gradient(#28170e,#120a06);border:1px solid #9a6928;border-radius:999px;padding:12px 25px;color:#f6d59b;font-weight:900}
+.reactPanel{display:none;margin:9px auto 0;padding:8px;border:1px solid #6d491f;border-radius:16px;background:#0d0907;max-height:31svh;overflow:auto}.reactPanel.open{display:block}.reactGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.react{min-height:55px;border:1px solid #70491f;border-radius:11px;background:#211108;color:#fff;font-size:22px}
+@media(max-width:370px){.tables{grid-template-columns:1fr}.board{grid-template-columns:54px 1fr 54px}.reactGrid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
-<body>
-<div id="app"></div><div id="toast" class="toast"></div>
+<body><div id="app"></div>
 <script>
-const app=document.getElementById('app');
-let coins=500;
-function say(t){const x=document.getElementById('toast');x.textContent=t;x.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>x.classList.remove('show'),1600)}
-function menu(){
-app.innerHTML=`<div class="menu">
-<img class="menuBg" src="menu.webp" alt="Menu oficial Truco Online MAX HEALMS">
+const app=document.getElementById('app');let coins=5000;
+const tables=[
+[500,'Mesa Bronze','🥉','Entrada rápida'],
+[1000,'Mesa Prata','🥈','Mesa intermediária'],
+[2000,'Mesa Ouro','🥇','A disputa esquenta'],
+[5000,'Mesa Safira','💎','Mesa premium'],
+[10000,'Mesa Rubi','♦️','Apostas altas'],
+[20000,'Mesa Real','👑','Só para os fortes'],
+[50000,'Mesa Lenda','🔥','A mesa máxima']
+];
+function menu(){app.innerHTML=`<div class="menu">
+<img class="menuArt" src="menu.webp" alt="Menu oficial Truco Online MAX HEALMS">
 <div class="menuShade"></div>
-<div class="topHud">
-  <div class="player">🤠 Visitante<br><span class="small">ID: TR-PREVIEW</span></div>
-  <div class="coins">🪙 ${coins.toLocaleString('pt-BR')}</div>
-</div>
-<div class="logoPlate"><div class="t1">TRUCO</div><div class="t2">ONLINE</div><div class="brand">MAX HEALMS</div></div>
-<div class="menuActions">
-  <button class="menuBtn play" onclick="jogar()">🎴 JOGAR AGORA</button>
-  <button class="menuBtn google" onclick="google()">G&nbsp;&nbsp; VINCULAR COM GOOGLE</button>
-</div>
-<div class="bottomNav">
-  <button onclick="loja()"><span class="ico">🛒</span>LOJA</button>
-  <button onclick="conta()"><span class="ico">👤</span>CONTA E<br>PERFIL</button>
-  <button onclick="config()"><span class="ico">⚙️</span>CONFIG.</button>
-  <button onclick="ranking()"><span class="ico">🏆</span>RANKING</button>
-</div>
-</div>`;
-}
-function head(t){return `<div class="topbar"><button class="back" onclick="menu()">← Voltar</button><div class="title">${t}</div></div>`}
-function jogar(){app.innerHTML=`<div class="screen">${head('Escolha a mesa')}<div class="row"><span class="badge">🪙 Saldo: ${coins}</span><span class="small">Mesas liberadas pelo saldo atual</span></div><div class="grid">
-${[500,1000,2000,5000,10000,20000,50000].map(v=>`<button class="tbl" ${coins<v?'disabled':''} onclick="mesa(${v})"><strong>🪙 ${v.toLocaleString('pt-BR')}</strong>${coins>=v?'ENTRAR':'BLOQUEADA'}</button>`).join('')}
+<div class="hud"><div class="pill player">🤠 Capitão Ladrão<br><small>ID: TR-PREVIEW</small></div><div class="pill coins">🪙 ${coins.toLocaleString('pt-BR')}</div></div>
+<button class="hot playHot" onclick="lobby()" aria-label="Jogar agora"></button>
+<button class="hot googleHot" onclick="alert('Google real será ligado no Firebase; aqui é apenas a prévia visual.')" aria-label="Google"></button>
+<div class="bottomMask"></div>
+<div class="nav">
+<button onclick="shop()"><span>🛒</span>LOJA<small>COMPRE MOEDAS</small></button>
+<button onclick="account()"><span>👤</span>CONTA E PERFIL<small>ID, APELIDO E AVATAR</small></button>
+<button onclick="settings()"><span>⚙️</span>CONFIGURAÇÕES<small>SOM, GRÁFICOS, AJUDA</small></button>
+<button onclick="ranking()"><span>🏆</span>RANKING<small>OS MELHORES JOGADORES</small></button>
 </div></div>`}
-function mesa(v){if(coins<v)return;say('Mesa de '+v.toLocaleString('pt-BR')+' selecionada');setTimeout(()=>partida(v),350)}
-function partida(v){app.innerHTML=`<div class="screen">${head('Partida • Mesa '+v.toLocaleString('pt-BR'))}<div class="card"><div class="row"><b>NÓS 0</b><b>ELES 0</b></div><p style="text-align:center;font-size:54px;margin:28px 0">🂠 🂠 🂠</p><div class="grid"><button class="action green" onclick="say('Carta jogada')">JOGAR CARTA</button><button class="action" onclick="say('TRUCO!')">TRUCO!</button></div></div><div class="card"><b>😈 Reações</b><div class="reactions" style="margin-top:10px">${['🃏','🤥','👀','🐔','😏','🏃','😂','😉','👏','😴','🪣','💣','⚡','🍅','🥚','🧊','🌪️','👟','🧲','🎂'].map(e=>`<button class="react" onclick="say('Reação enviada ${e}')">${e}</button>`).join('')}</div></div></div>`}
-function google(){say('Google: prévia funcional; login real entra depois do Firebase')}
-function loja(){app.innerHTML=`<div class="screen">${head('Loja')}<div class="card"><b>Moedas virtuais</b><p class="small">Compras reais continuam desativadas nesta prévia.</p></div><div class="grid">${[['2.000','R$ 1,99'],['6.000','R$ 4,99'],['14.000','R$ 9,99'],['32.000','R$ 19,99']].map(x=>`<button class="tbl" onclick="say('Compra de teste: ${x[0]} moedas')"><strong>🪙 ${x[0]}</strong>${x[1]}</button>`).join('')}</div></div>`}
-function conta(){app.innerHTML=`<div class="screen">${head('Conta e Perfil')}<div class="card"><p><b>Nome:</b> Visitante</p><p><b>ID:</b> TR-PREVIEW</p><p><b>Conta Google:</b> não vinculada</p><button class="action blue" onclick="google()">VINCULAR COM GOOGLE</button></div></div>`}
-function config(){app.innerHTML=`<div class="screen">${head('Configurações')}<div class="card"><p>🔊 Sons <input type="checkbox" checked></p><p>📳 Vibração <input type="checkbox" checked></p><p>🎵 Música <input type="checkbox" checked></p></div></div>`}
-function ranking(){app.innerHTML=`<div class="screen">${head('Ranking')}<div class="card"><p>🥇 Jogador 1 — 28 vitórias</p><p>🥈 Jogador 2 — 21 vitórias</p><p>🥉 Jogador 3 — 18 vitórias</p><p class="small">Dados demonstrativos nesta prévia.</p></div></div>`}
+function topbar(){return `<div class="top"><div class="profile"><div class="avatar">🤠</div><div><b>Capitão Ladrão</b><small>TR-PREVIEW</small></div></div><div class="coinBadge">🪙 ${coins.toLocaleString('pt-BR')}</div><button class="back" onclick="menu()">← MENU</button></div>`}
+function lobby(){app.innerHTML=`<div class="screen">${topbar()}<div class="hero"><div class="ey">ESCOLHA SUA MESA</div><h2>Entre onde seu saldo permitir</h2><p>Um toque em qualquer mesa disponível inicia a partida.</p></div><div class="tables">${tables.map(t=>{const ok=coins>=t[0];return `<button class="table" ${ok?'onclick="game('+t[0]+')"':'disabled'}><div class="tableHead"><i>${t[2]}</i>${t[1]}</div><div class="felt"><span>🂠 🂠</span></div><div class="sub">${t[3]}</div><div class="price">Entrada 🪙 <b>${t[0].toLocaleString('pt-BR')}</b></div><div class="status ${ok?'':'locked'}">${ok?'● DISPONÍVEL<span class="tap">TOQUE PARA ENTRAR</span>':'🔒 BLOQUEADA'}</div></button>`}).join('')}</div></div>`}
+function game(bet){app.innerHTML=`<div class="screen">
+<div class="gameTop"><div class="coinBadge">🪙 ${coins.toLocaleString('pt-BR')}</div><div class="stake">Aposta ${bet.toLocaleString('pt-BR')}</div><button class="exit" onclick="lobby()">🚪 Sair</button></div>
+<div class="score"><b>Nós 0</b><span>Mão vale <b>1</b></span><b>Eles 0</b></div>
+<div class="board">
+<div class="seat topSeat">👩 Ana (parceira) 🎴<br><span class="backCard"></span><span class="backCard"></span><span class="backCard"></span></div>
+<div class="seat left">🤠 Carlos<br><span class="backCard"></span><br><span class="backCard"></span><br><span class="backCard"></span></div>
+<div class="center"><div class="vira">Vira<br><span class="card">7<br>♣</span></div></div>
+<div class="seat right">👨 Beto<br><span class="backCard"></span><br><span class="backCard"></span><br><span class="backCard"></span></div>
+<div class="me">🤠 Capitão Ladrão 🎴<div class="hand"><span class="card red">4<br>♥</span><span class="card red">A<br>♦</span><span class="card">K<br>♣</span></div></div>
+</div>
+<div class="msg">🔄 Você deu as cartas • começa Carlos</div>
+<div class="actions"><button class="truco">TRUCO! (3)</button><button class="reactOpen" onclick="toggleReact()">😈 Reações</button></div>
+<div id="rp" class="reactPanel"><div class="reactGrid">${['🃏','🤥','👀','🐔','😏','🏃','😂','😉','👏','😴','🪣','💣','⚡','🍅','🥚','🧊','🌪️','👟','🧲','🎂'].map(x=>`<button class="react">${x}</button>`).join('')}</div></div>
+</div>`}
+function toggleReact(){document.getElementById('rp').classList.toggle('open')}
+function simple(title,body){app.innerHTML=`<div class="screen">${topbar()}<div class="hero"><div class="ey">MAX HEALMS</div><h2>${title}</h2><p>${body}</p></div></div>`}
+function shop(){simple('Loja','Pacotes de moedas e compras ficam aqui.')}
+function account(){simple('Conta e Perfil','Nome, ID, avatar e vínculo Google.')}
+function settings(){simple('Configurações','Som, vibração, gráficos e ajuda.')}
+function ranking(){simple('Ranking','Melhores jogadores e estatísticas.')}
 menu();
-</script>
-</body></html>
+</script></body></html>
