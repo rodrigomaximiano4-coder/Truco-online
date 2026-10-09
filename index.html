@@ -3,57 +3,75 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Truco Online • Preview Mobile</title>
+<meta name="theme-color" content="#070503">
+<title>Truco Online • MAX HEALMS</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;background:#17120d;color:#fff;font-family:Arial,sans-serif}
-body{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:18px}
-.phone{width:min(390px,100%);min-height:844px;background:linear-gradient(#1d130b,#070503);border-radius:28px;overflow:hidden;box-shadow:0 20px 60px #0008;border:1px solid #61411f;position:relative}
-.hero{height:560px;background:
-radial-gradient(circle at 50% 26%,#6a3d15 0 12%,transparent 13%),
-linear-gradient(180deg,#6b3f1b 0 16%,#2c1c10 36%,#0c0a07 100%);
-position:relative;padding:14px}
-.top{display:flex;justify-content:space-between;align-items:flex-start}
-.badge,.coins{background:#0a0807d9;border:1px solid #b57d2a;border-radius:16px;padding:8px 10px;font-weight:800}
-.logo{text-align:center;margin-top:42px;font-size:54px;font-weight:1000;line-height:.86;color:#f5c24a;text-shadow:0 3px 0 #60330f,0 7px 18px #000}
-.logo small{display:block;color:#fff;font-size:24px;letter-spacing:2px;margin-top:12px}
-.logo em{display:block;background:#a82318;color:#ffd96b;width:max-content;margin:10px auto 0;padding:7px 18px;border-radius:8px;font-style:normal;font-size:16px}
-.main{position:absolute;left:8%;right:8%;bottom:82px;display:grid;gap:10px}
-.btn{border:0;border-radius:14px;padding:14px;font-size:18px;font-weight:900;color:#fff}
-.play{background:linear-gradient(#3bc73a,#187c19);border:2px solid #d9f1a0}
-.google{background:linear-gradient(#3494ff,#195dba);border:2px solid #d8e8ff}
-.nav{position:absolute;left:3%;right:3%;bottom:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.nav button{background:#24150c;color:#ffe1a2;border:1px solid #80531f;border-radius:12px;padding:10px 4px;font-size:10px;font-weight:800}
-.info{padding:16px;text-align:center}
-.info h2{margin:0 0 8px;font-size:20px;color:#f4c356}
-.info p{margin:0;opacity:.78;font-size:13px;line-height:1.35}
-.note{margin-top:12px;font-size:11px;opacity:.55}
+html,body{margin:0;min-height:100%;background:#070503;color:#fff;font-family:Arial,sans-serif}
+button{font:inherit}
+#app{min-height:100svh}
+.menu{min-height:100svh;background:#080604;position:relative;overflow:hidden}
+.menuBg{position:fixed;inset:-8%;width:116%;height:116%;object-fit:cover;filter:blur(22px) brightness(.28);transform:scale(1.08);z-index:0}
+.artBox{position:relative;z-index:1;width:100vw;aspect-ratio:3/2;max-height:66.667vw;overflow:hidden;box-shadow:0 10px 32px #000c}
+.art{display:block;width:100%;height:100%;object-fit:fill}
+.hot{position:absolute;border:0;background:transparent;opacity:.001;z-index:5;padding:0;margin:0;-webkit-tap-highlight-color:transparent}
+.player{position:absolute;z-index:6;left:2.5%;top:2.3%;font-weight:900;font-size:clamp(10px,3vw,17px);text-shadow:0 2px 4px #000;pointer-events:none}
+.coins{position:absolute;z-index:6;right:18.5%;top:2.5%;font-weight:1000;color:#ffd86b;font-size:clamp(12px,3.5vw,19px);text-shadow:0 2px 4px #000;pointer-events:none}
+.menuInfo{position:relative;z-index:2;margin:18px auto 0;width:min(92vw,520px);padding:12px 14px;background:#120c08e8;border:1px solid #7a5226;border-radius:18px;text-align:center;color:#ead7b2;font-size:13px}
+.screen{min-height:100svh;background:linear-gradient(#20140b,#080604);padding:14px 12px 28px}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.back{border:1px solid #9a6a28;background:#1b1008;color:#ffd77a;border-radius:12px;padding:10px 12px;font-weight:900}
+.title{font-size:22px;font-weight:1000;color:#f5c454}
+.card{background:#120d09;border:1px solid #69471f;border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 8px 22px #0006}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tbl,.action{border:1px solid #9a6a28;background:linear-gradient(#2c180d,#160c07);color:#fff;border-radius:16px;padding:16px 10px;font-weight:900}
+.tbl strong{display:block;color:#ffd86b;font-size:20px;margin-bottom:5px}
+.green{background:linear-gradient(#2db934,#146917);border-color:#b7e99e}
+.blue{background:linear-gradient(#318de9,#174e9d);border-color:#b4d7ff}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.badge{padding:7px 10px;border-radius:999px;background:#25160d;border:1px solid #79501f;color:#ffd86b;font-weight:800}
+.small{font-size:12px;opacity:.75}
+.reactions{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.react{min-height:62px;border:1px solid #765025;background:#1b1009;color:#fff;border-radius:13px;font-size:23px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:50;background:#111;border:1px solid #a97a34;border-radius:999px;padding:11px 16px;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.toast.show{opacity:1}
+@media(max-width:380px){.grid{grid-template-columns:1fr}.reactions{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
-<div class="phone">
-  <div class="hero">
-    <div class="top">
-      <div class="badge">🤠 Visitante<br><small>ID: TR-PREVIEW</small></div>
-      <div class="coins">🪙 500</div>
-    </div>
-    <div class="logo">TRUCO<small>ONLINE</small><em>MAX HEALMS</em></div>
-    <div class="main">
-      <button class="btn play">🎴 JOGAR AGORA</button>
-      <button class="btn google">G&nbsp; VINCULAR COM GOOGLE</button>
-    </div>
-    <div class="nav">
-      <button>🛒<br>LOJA</button>
-      <button>👤<br>CONTA</button>
-      <button>⚙️<br>CONFIG.</button>
-      <button>🏆<br>RANKING</button>
-    </div>
-  </div>
-  <div class="info">
-    <h2>Preview Mobile</h2>
-    <p>Esta página existe para validar o layout no celular antes de gerar outro APK.</p>
-    <div class="note">Depois de aprovarmos o formato, substituímos este preview pela versão completa.</div>
-  </div>
+<div id="app"></div><div id="toast" class="toast"></div>
+<script>
+const app=document.getElementById('app');
+let coins=500;
+function say(t){const x=document.getElementById('toast');x.textContent=t;x.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>x.classList.remove('show'),1600)}
+function menu(){
+app.innerHTML=`<div class="menu">
+<img class="menuBg" src="menu.webp" alt="">
+<div class="artBox">
+<img class="art" src="menu.webp" alt="Menu oficial Truco Online MAX HEALMS">
+<div class="player">🤠 Visitante<br><span class="small">ID: TR-PREVIEW</span></div>
+<div class="coins">🪙 ${coins.toLocaleString('pt-BR')}</div>
+<button class="hot" style="left:34.3%;top:50.3%;width:35.7%;height:11.7%" onclick="jogar()" aria-label="Jogar Agora"></button>
+<button class="hot" style="left:34.3%;top:63.2%;width:35.7%;height:9.7%" onclick="google()" aria-label="Vincular com Google"></button>
+<button class="hot" style="left:5.8%;top:88.1%;width:20.2%;height:9.6%" onclick="loja()" aria-label="Loja"></button>
+<button class="hot" style="left:29%;top:88.1%;width:22.5%;height:9.6%" onclick="conta()" aria-label="Conta e Perfil"></button>
+<button class="hot" style="left:52.6%;top:88.1%;width:24.3%;height:9.6%" onclick="config()" aria-label="Configurações"></button>
+<button class="hot" style="left:79%;top:88.1%;width:18.4%;height:9.6%" onclick="ranking()" aria-label="Ranking"></button>
 </div>
-</body>
-</html>
+<div class="menuInfo">Prévia funcional no celular • toque nos botões da própria imagem</div>
+</div>`;
+}
+function head(t){return `<div class="topbar"><button class="back" onclick="menu()">← Voltar</button><div class="title">${t}</div></div>`}
+function jogar(){app.innerHTML=`<div class="screen">${head('Escolha a mesa')}<div class="row"><span class="badge">🪙 Saldo: ${coins}</span><span class="small">Mesas liberadas pelo saldo atual</span></div><div class="grid">
+${[500,1000,2000,5000,10000,20000,50000].map(v=>`<button class="tbl" ${coins<v?'disabled':''} onclick="mesa(${v})"><strong>🪙 ${v.toLocaleString('pt-BR')}</strong>${coins>=v?'ENTRAR':'BLOQUEADA'}</button>`).join('')}
+</div></div>`}
+function mesa(v){if(coins<v)return;say('Mesa de '+v.toLocaleString('pt-BR')+' selecionada');setTimeout(()=>partida(v),350)}
+function partida(v){app.innerHTML=`<div class="screen">${head('Partida • Mesa '+v.toLocaleString('pt-BR'))}<div class="card"><div class="row"><b>NÓS 0</b><b>ELES 0</b></div><p style="text-align:center;font-size:54px;margin:28px 0">🂠 🂠 🂠</p><div class="grid"><button class="action green" onclick="say('Carta jogada')">JOGAR CARTA</button><button class="action" onclick="say('TRUCO!')">TRUCO!</button></div></div><div class="card"><b>😈 Reações</b><div class="reactions" style="margin-top:10px">${['🃏','🤥','👀','🐔','😏','🏃','😂','😉','👏','😴','🪣','💣','⚡','🍅','🥚','🧊','🌪️','👟','🧲','🎂'].map(e=>`<button class="react" onclick="say('Reação enviada ${e}')">${e}</button>`).join('')}</div></div></div>`}
+function google(){say('Google: prévia funcional; login real entra depois do Firebase')}
+function loja(){app.innerHTML=`<div class="screen">${head('Loja')}<div class="card"><b>Moedas virtuais</b><p class="small">Compras reais continuam desativadas nesta prévia.</p></div><div class="grid">${[['2.000','R$ 1,99'],['6.000','R$ 4,99'],['14.000','R$ 9,99'],['32.000','R$ 19,99']].map(x=>`<button class="tbl" onclick="say('Compra de teste: ${x[0]} moedas')"><strong>🪙 ${x[0]}</strong>${x[1]}</button>`).join('')}</div></div>`}
+function conta(){app.innerHTML=`<div class="screen">${head('Conta e Perfil')}<div class="card"><p><b>Nome:</b> Visitante</p><p><b>ID:</b> TR-PREVIEW</p><p><b>Conta Google:</b> não vinculada</p><button class="action blue" onclick="google()">VINCULAR COM GOOGLE</button></div></div>`}
+function config(){app.innerHTML=`<div class="screen">${head('Configurações')}<div class="card"><p>🔊 Sons <input type="checkbox" checked></p><p>📳 Vibração <input type="checkbox" checked></p><p>🎵 Música <input type="checkbox" checked></p></div></div>`}
+function ranking(){app.innerHTML=`<div class="screen">${head('Ranking')}<div class="card"><p>🥇 Jogador 1 — 28 vitórias</p><p>🥈 Jogador 2 — 21 vitórias</p><p>🥉 Jogador 3 — 18 vitórias</p><p class="small">Dados demonstrativos nesta prévia.</p></div></div>`}
+menu();
+</script>
+</body></html>
