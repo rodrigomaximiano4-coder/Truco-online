@@ -47,9 +47,9 @@ const server=http.createServer((req,res)=>{
  const cors={'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type','Cache-Control':'no-store','Content-Type':'application/json; charset=utf-8'};
  const send=(status,obj)=>{res.writeHead(status,cors);res.end(JSON.stringify(obj))};
  if(req.method==='GET' && (req.url==='/'||req.url==='/online.html')){
-  const file=path.join(__dirname,'..','www','online.html');
+  const file=path.join(__dirname,'online.html');
   return fs.readFile(file,(err,html)=>{
-   if(err){res.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'});return res.end('online.html nao encontrado na pasta www ao lado de server-multiplayer')};
+   if(err){res.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'});return res.end('online.html nao encontrado na raiz do repositorio')};
    res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});res.end(html)
   })
  }
