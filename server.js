@@ -43,8 +43,12 @@ function join(name){name=String(name||'Jogador').trim().slice(0,24);if(!name)nam
  const seat=g.players.findIndex(p=>p.bot);const token=id();g.players[seat]={name,bot:false,token,lastSeen:Date.now()};sessions.set(token,{game:g.id,seat});notify(g);tick(g);return {token,seat,game:g.id,waitingSeconds:8}}
 function lookup(token){const s=sessions.get(String(token||''));const g=s&&games.get(s.game);if(!g)return null;const p=g.players[s.seat];if(p.token!==token||p.bot)return null;p.lastSeen=Date.now();p.reconnectUntil=0;return {g,seat:s.seat,p}}
 const MAX=4096;
+// Limites basicos de requisicoes por IP para o ambiente de teste.
+const buckets=new Map();
+function allowed(ip){const now=Date.now(),b=buckets.get(ip)||{time:now,n:0};if(now-b.time>60000){b.time=now;b.n=0}b.n++;buckets.set(ip,b);return b.n<=180}
+setInterval(()=>{const now=Date.now();for(const [ip,b] of buckets)if(now-b.time>120000)buckets.delete(ip)},120000).unref();
 const server=http.createServer((req,res)=>{
- const cors={'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type','Cache-Control':'no-store','Content-Type':'application/json; charset=utf-8'};
+ const cors={'Access-Control-Allow-Origin':ORIGIN,'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type','Cache-Control':'no-store','Content-Type':'application/json; charset=utf-8','X-Content-Type-Options':'nosniff'};
  const send=(status,obj)=>{res.writeHead(status,cors);res.end(JSON.stringify(obj))};
  if(req.method==='GET' && (req.url==='/'||req.url==='/online.html')){
   const file=path.join(__dirname,'online.html');
@@ -54,10 +58,12 @@ const server=http.createServer((req,res)=>{
   })
  }
  if(req.method==='OPTIONS')return send(200,{});
- if(req.url==='/health')return send(200,{ok:true,version:'online-mvp-1.5-deploy'});
+ if(!allowed(req.socket.remoteAddress||'unknown'))return send(429,{error:'Muitas requisicoes; tente novamente em instantes'});
+ if(req.url==='/health')return send(200,{ok:true,version:'online-mvp-staging',activeRooms:games.size,mode:'experimental'});
  if(!['/join','/state','/play','/leave','/suspend'].includes(req.url)||req.method!=='POST')return send(404,{error:'Rota desconhecida'});
  let raw='';req.on('data',ch=>{raw+=ch;if(raw.length>MAX)req.destroy()});req.on('end',()=>{
  let x;try{x=JSON.parse(raw||'{}')}catch{return send(400,{error:'JSON inválido'})}
+ if(!x||typeof x!=='object'||Array.isArray(x))return send(400,{error:'Corpo JSON invalido'});
  if(req.url==='/join')return send(200,join(x.name));
  const found=lookup(x.token);if(!found)return send(401,{error:'Sessão expirada ou jogador substituído por bot'});
  const {g,seat}=found;tick(g);
