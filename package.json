@@ -1,0 +1,1 @@
+{"name":"truco-online-multiplayer-mvp","version":"1.5.0","private":true,"scripts":{"start":"node server/server.js","test":"node server/test.js"},"engines":{"node":">=20"}}

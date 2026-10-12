@@ -1,0 +1,42 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Truco Online — Multiplayer experimental</title><style>
+*{box-sizing:border-box}body{font:16px system-ui;background:#11251c;color:#fff;margin:0;padding:16px}main{max-width:640px;margin:auto}h1{color:#ffce61}input,button{font:inherit;padding:12px;border-radius:9px;border:0;margin:4px}input{max-width:100%;width:100%;background:#fff}button{background:#edba57;color:#241408;font-weight:700}button:disabled{opacity:.4}#table{display:none}section,.panel{background:#19402f;padding:12px;border-radius:14px;margin:12px 0}.seats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.seat{background:#1b503b;border:1px solid #c4a465;padding:10px;border-radius:9px}#hand button{background:white;font-size:20px;margin:5px}#played{display:grid;grid-template-columns:1fr 1fr;gap:8px}.muted{color:#d3d3c2;font-size:13px}a{color:#fbe6ae}strong{color:#ffe39c}#status{font-weight:800}code{word-break:break-all}
+</style></head><body><main><h1>🃏 Truco Online</h1><p class="muted">MODO ONLINE EXPERIMENTAL (SEM DIAMANTES). Sala com até 4 jogadores. Vagas vazias são preenchidas por bots após 8 segundos. Esta sala usa pontuação demonstrativa, sem diamantes.</p>
+<section id="login"><label>Seu nome<input id="name" maxlength="24" value="Jogador"></label><label>Endereço do servidor (automático para teste local)<input id="endpoint" placeholder="https://seu-servidor.onrender.com"></label><button onclick="join()">Entrar na mesa online</button><p id="err" style="color:#ffcfb2"></p></section>
+<section id="table"><p id="status"></p><div id="count"></div><div id="seats" class="seats"></div><p id="notice"></p><div class="panel"><strong>Vira:</strong> <span id="vira"></span> · <strong>Manilha:</strong> <span id="man"></span></div><h3>Cartas na mesa</h3><div id="played"></div><h3>Suas cartas</h3><div id="hand"></div><button onclick="leave()">Sair e passar a vaga ao bot</button></section>
+<p><a href="index.html">← Voltar ao jogo local</a></p></main><script>
+let token=null, seat=-1, poll=null, last='', endpoint='';
+const savedKey='truco_online_session_v14';
+function keepSession(){try{sessionStorage.setItem(savedKey,JSON.stringify({token,seat,endpoint}))}catch(e){}}
+function clearSession(){try{sessionStorage.removeItem(savedKey)}catch(e){}}const $=id=>document.getElementById(id);
+function safe(t){return String(t??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]))}
+async function req(path,data){const response=await fetch(endpoint+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),cache:'no-store'});let v=await response.json();if(!response.ok)throw Error(v.error||'Erro HTTP '+response.status);return v}
+async function join(){try{$('err').textContent='Conectando ao servidor...';endpoint=$('endpoint').value.trim().replace(/\/+$/,'');try{localStorage.setItem('trucoOnlineEndpoint',endpoint)}catch(e){}if(!/^https:\/\//.test(endpoint)&&!/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(endpoint))throw Error('Use HTTPS para um servidor externo; localhost para teste no computador.');const j=await req('/join',{name:$('name').value});token=j.token;seat=j.seat;keepSession();$('login').style.display='none';$('table').style.display='block';$('err').textContent='';poll=setInterval(refresh,600);await refresh()}catch(e){$('err').textContent='Não foi possível entrar: '+(e.message==='Failed to fetch'?'verifique se o servidor da porta 3000 continua aberto.':e.message)}}
+async function refresh(){if(!token)return;try{const g=await req('/state',{token});$('status').textContent=g.phase==='waiting'?'Aguardando jogadores...':g.phase==='over'?`Fim! Dupla ${g.winner+1} venceu`:`Dupla 1 ${g.score[0]} × ${g.score[1]} Dupla 2`;
+ $('count').textContent=g.phase==='playing'?`Vez: ${g.players[g.turn].name} · ${Math.max(0,Math.ceil((g.deadline-g.serverTime)/1000))} segundos`:'';
+ $('seats').innerHTML=g.players.map((p,i)=>`<div class="seat">${i===seat?'👉 ':''}${safe(p.name)} ${p.bot?'🤖':'🧑'}<br><small>${i%2===0?'Dupla 1':'Dupla 2'}</small></div>`).join('');$('notice').textContent=g.notice||'';$('vira').textContent=g.vira?g.vira.r+g.vira.s:'—';$('man').textContent=g.man||'—';$('played').innerHTML=g.played.map((c,i)=>`<div class="seat">${safe(g.players[i].name)}: ${c?c.r+c.s:'—'}</div>`).join('');$('hand').innerHTML=g.hand.map((c,i)=>`<button ${g.turn!==seat||g.phase!=='playing'?'disabled':''} onclick="play(${i})">${c.r}${c.s}</button>`).join('');}catch(e){if(/Sessão expirada|substituído/.test(e.message)){clearInterval(poll);token=null;clearSession();$('table').style.display='none';$('login').style.display='block';$('err').textContent='A conexão expirou; um bot assumiu sua vaga. Você pode entrar novamente.'}else $('notice').textContent='Conexão indisponível: '+e.message}}
+async function play(index){if(!token)return;try{await req('/play',{token,index});await refresh()}catch(e){$('notice').textContent=e.message}}
+async function leave(){if(token){try{await req('/leave',{token})}catch(e){}}token=null;clearSession();clearInterval(poll);$('table').style.display='none';$('login').style.display='block'}
+// Web hospedada: usa a propria origem. Android: persiste o HTTPS escolhido no dispositivo.
+const configured=(new URLSearchParams(location.search)).get('server');
+const savedEndpoint=(()=>{try{return localStorage.getItem('trucoOnlineEndpoint')||''}catch(e){return ''}})();
+const localPreview=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+const currentWeb=/^https?:$/.test(location.protocol);
+document.getElementById('endpoint').value=configured||savedEndpoint||(currentWeb&&!localPreview?location.origin:'http://127.0.0.1:3000');
+// Ao fechar a aba, avisamos o servidor sem depender de fetch durante a navegacao.
+// O servidor aguarda 10 segundos para a sessao retornar; depois um bot assume.
+window.addEventListener('pagehide',()=>{
+ if(!token)return;
+ const data=JSON.stringify({token});
+ try{if(navigator.sendBeacon){navigator.sendBeacon(endpoint+'/suspend',new Blob([data],{type:'text/plain;charset=UTF-8'}));return}}catch(e){}
+ try{fetch(endpoint+'/suspend',{method:'POST',body:data,headers:{'Content-Type':'text/plain'},keepalive:true}).catch(()=>{})}catch(e){}
+});
+async function resumeIfPossible(){
+ let s;try{s=JSON.parse(sessionStorage.getItem(savedKey)||'null')}catch(e){return}
+ if(!s?.token||!s?.endpoint)return;
+ endpoint=s.endpoint;token=s.token;seat=s.seat;
+ $('endpoint').value=endpoint;
+ try{await req('/state',{token});$('login').style.display='none';$('table').style.display='block';poll=setInterval(refresh,600);await refresh()}
+ catch(e){token=null;clearSession();$('err').textContent='Sessão anterior encerrada. Entre novamente.'}
+}
+resumeIfPossible();
+</script></body></html>
